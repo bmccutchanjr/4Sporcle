@@ -11,7 +11,7 @@
 :root
 {
 	--color: white;
-	--page-width: 80%;
+	--page-width: 75%;
 }
 
 body
@@ -20,19 +20,90 @@ body
 	font-size: 14px;
 }
 
-header
-{
-	background: rgba(255, 0, 0, 0.5);
-	font-family: "Fredoka One", cursive;
-	font-size: 36px;
-	padding: 25px;
-	text-align: center;
-}
-
 main
-{   background: rgba(0, 255, 0, 0.5);
+{
+	/* background-image: url("backgroung.avif"); */
+	background-image: url("4873.jpg");
+		background-position: center;
+		background-size: 100%;
+	padding-top: 10px;
 }
 
+main > section
+{
+	padding-bottom: 10px;
+	margin: 0px auto;
+	width: var(--page-width);
+}
+
+main > section:last-child
+{
+	padding-bottom: 0px;
+}
+
+main > section > *
+{
+	margin-bottom: 5px;
+}
+
+main > section > *:last-child
+{
+	margin-bottom: 0px;
+}
+
+.hidden
+{
+	/*	This rule is used with JavaScript to remove elements from the screen without removing them from the DOM,	*/
+	/*	simply by adding the class (or removing it) from the element's classList.  But note, this class will have	*/
+	/*	no effect when added to an element that has a CSS rule selected by id or tag and that rule specifies the	*/
+	/*	display attribute.   CSS applies rules by how specifically a selector identifies an element...and this is	*/
+	/*	pretty generic.  Almost any selector will be more specific.													*/
+
+	display: none;
+}
+
+button
+{
+	--button-color: #7f7fcf;
+	--border-radius: 3px;
+	background-color: var(--button-color);
+	border: 1px solid var(--button-color);
+		border-radius: var(--border-radius);
+	font-family: sans-serif;
+	font-size: 10px;
+	padding: var(--border-radius);
+		padding-left: 5px;
+		padding-right: 5px;
+	margin-right: 5px;
+}
+
+button:hover
+{
+	--button-color: white;
+	background-color: var(--button-color);
+	border-color: var(--button-color);
+}
+
+button:last-child
+{
+	margin-right: 0px;
+}
+
+/*	**********************************************************************************************************************	*/
+/*	style specific to sticky footer																							*/
+/*																															*/
+
+#input-quote
+{
+	backdrop-filter: blur(20px);
+	background-color: rgba(255, 255, 255, 0.5);
+	background-image: url("http://placehold.co/300x150");
+	    background-position: center;
+		background-repeat: no-repeat;
+	height: 50vh;
+	resize: none;
+	width: 100%;
+}
 
 /*	**********************************************************************************************************************	*/
 /*	style specific to sticky footer																							*/
@@ -43,14 +114,14 @@ body, html
 }
 
 .wrapper
-{   background: rgba(0, 255, 255, 0.5);
+{
 	height: auto;
 	margin-bottom: -50px;
 	min-height: 100%;
 }
 
 .push
-{   background: yellow;
+{
 	height: 50px;
 }
 
@@ -88,9 +159,10 @@ footer span:last-child
 	text-align: right;
 }
 
-/*                                         */
-/* media queries for responsive design     */
-/*                                         */
+
+/*	**********************************************************************************************************************	*/
+/*	media queries for responsive design																						*/
+/*																															*/
 
 @media screen and (max-width: 572px)
 {
