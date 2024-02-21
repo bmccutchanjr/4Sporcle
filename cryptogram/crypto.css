@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+*
+{
+	box-sizing: border-box;
+	font-family: inherit;
+	padding: 0px;
+	margin: 0px;
+}
+
+:root
+{
+	--color: white;
+	--page-width: 80%;
+}
+
+body
+{
+	font-family: sans-serif;
+	font-size: 14px;
+}
+
+header
+{
+	background: rgba(255, 0, 0, 0.5);
+	font-family: "Fredoka One", cursive;
+	font-size: 36px;
+	padding: 25px;
+	text-align: center;
+}
+
+main
+{   background: rgba(0, 255, 0, 0.5);
+}
+
+
+/*	**********************************************************************************************************************	*/
+/*	style specific to sticky footer																							*/
+/*																															*/
+
+body, html
+{   height: 100%;
+}
+
+.wrapper
+{   background: rgba(0, 255, 255, 0.5);
+	height: auto;
+	margin-bottom: -50px;
+	min-height: 100%;
+}
+
+.push
+{   background: yellow;
+	height: 50px;
+}
+
+footer
+{
+	background: black;
+	color: white;
+	height: 30px;
+	margin-top: 20px;
+	padding: 10px;
+}
+
+footer > div
+{
+	display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	font-family: sans-serif;
+	font-size: 10px;
+	height: 10px;
+	margin: 0px auto;
+	width: var(--page-width);
+}
+
+footer span
+{
+	flex-grow: 1;
+	flex-shrink: 0;
+	text-align: left;
+	width: 40%;
+}
+
+footer span:last-child
+{
+	text-align: right;
+}
+
+/*                                         */
+/* media queries for responsive design     */
+/*                                         */
+
+@media screen and (max-width: 572px)
+{
+}
