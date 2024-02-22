@@ -3,7 +3,26 @@ window.addEventListener ("load", event =>
 	const input = document.getElementById ("input-quote");
 	input.addEventListener ("blur", event => quoteBlurHandler (event));
 	input.addEventListener ("input", event => quoteInputHandler (event));
+
+	const encode = document.getElementById ("encode");
+	encode.addEventListener ("click", event => encodeClickHandler (event));
 })
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Event handlers for the encode <button>
+//
+
+function encodeClickHandler (event)
+{	event.preventDefault();
+	target = event.target;
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Event handlers for the quote-input <textarea>
+//
 
 function quoteBlurHandler (event)
 {	event.preventDefault();
@@ -34,6 +53,11 @@ function quoteInputHandler (event)
 		hideElement ("encode", false);
 	}
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Functions used throughout this script
+//
 
 function hideElement (element, hide=true)
 {
