@@ -13,7 +13,7 @@
 	--border-radius: 4px;
 	--color: white;
 	--page-width: 75%;
-		--max-width: 700px;
+	--max-width: 700px;
 }
 
 @media screen and (max-width: 600px)
@@ -21,7 +21,7 @@
 	:root
 	{
 		--page-width: 85%;
-			--max-width: 400px;
+		--max-width: 400px;
 	}
 }
 
@@ -30,7 +30,7 @@
 	:root
 	{
 		--page-width: 90%;
-			--max-width: 100%;
+		--max-width: 100%;
 	}
 }
 
@@ -53,6 +53,7 @@ main > section
 	padding-bottom: 10px;
 	margin: 0px auto;
 	width: var(--page-width);
+		max-width: var(--max-width);
 }
 
 main > section:last-child
