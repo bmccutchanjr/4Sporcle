@@ -110,6 +110,7 @@ button:last-child
 	background-image: url("textarea.svg");
 	    background-position: center;
 		background-repeat: no-repeat;
+		background-size: contain;
 }
 
 /*	**********************************************************************************************************************	*/
