@@ -19,6 +19,7 @@ body
 	background-image: url("4873.jpg");
 		background-position: center;
 		background-size: 100%;
+		/* background-size: contain; */
 	font-family: sans-serif;
 	font-size: 14px;
 }

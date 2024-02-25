@@ -40,14 +40,26 @@ function getCipher ()
 	//	Remove some random element from the alphabet, and push that value into the array cipher[].  Repeat until no
 	//	elements remain in the alphabet.
 
-//		while (alphabet.length > 0)
+	while (alphabet.length > 0)
 	{
-		const x = Math.floor ((Math.random() * alphabet.length) + 1);
-		cipher.push (alphabet.splice (x));
+		const x = Math.floor ((Math.random() * alphabet.length));
+		cipher.push (alphabet.splice (x, 1)[0]);
 	}
 
-//	alert (JSON.stringify (alphabet, " ", 2));
-alert (JSON.stringify (cipher, " ", 2));
+	//	One last thing...  No element of the cipher should have the same value as the corresponding element of the
+	//	alphabet; e.g. A != A, B != B, etc.
+
+	let fail = false;
+	cipher.forEach ((c, i) =>
+	{
+		if (c == alphabet[i]) fail = true;
+	})
+
+	//	If the cipher fails the test, try again.
+
+	if (fail) return getCipher();
+
+	//	Otherwise, return the cipher
 
 	return cipher;
 }
