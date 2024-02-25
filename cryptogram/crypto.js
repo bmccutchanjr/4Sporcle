@@ -37,11 +37,11 @@ function encodeClickHandler (event)
 		qUpper = qUpper.replaceAll (alphabet[i], c);
 	})
 
-hideElement ("input-quote");
-hideElement ("encode");
-hideElement ("encoded-quote", false);
+	hideElement ("input-quote");
+	hideElement ("encode");
+	hideElement ("encoded-quote", false);
 
-document.getElementById ("encoded-quote").innerText = qUpper;
+	document.getElementById ("encoded-quote").innerText = qUpper;
 
 //	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
 //	app.
@@ -102,7 +102,6 @@ function quoteBlurHandler (event)
 
 function quoteFocusHandler (event)
 {	event.preventDefault();
-//		target = event.target;
 	event.target.select();
 }
 
