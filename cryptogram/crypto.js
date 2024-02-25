@@ -2,6 +2,7 @@ window.addEventListener ("load", event =>
 {
 	const input = document.getElementById ("input-quote");
 	input.addEventListener ("blur", event => quoteBlurHandler (event));
+	input.addEventListener ("focus", event => quoteFocusHandler (event));
 	input.addEventListener ("input", event => quoteInputHandler (event));
 
 	const encode = document.getElementById ("encode");
@@ -17,8 +18,39 @@ function encodeClickHandler (event)
 {	event.preventDefault();
 	target = event.target;
 
+	//	This app is intended to be used in the construction of a cryptogram quiz.  It expects a string of text representing
+	//	a quote or anecdote and encodes the input using a simple substitution cipher.
+
+	const a1 = getAlphabet();
+	const a2 = getCipher();
+
 }
 
+function getAlphabet ()
+{
+	return [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
+}
+
+function getCipher ()
+{	//	Create the substitution cipher that will be used.
+
+	const alphabet = getAlphabet();
+	const cipher = [];
+
+	//	Remove some random element from the alphabet, and push that value into the array cipher[].  Repeat until no
+	//	elements remain in the alphabet.
+
+//		while (alphabet.length > 0)
+	{
+		const x = Math.floor ((Math.random() * alphabet.length) + 1);
+		cipher.push (alphabet.splice (x));
+	}
+
+//	alert (JSON.stringify (alphabet, " ", 2));
+alert (JSON.stringify (cipher, " ", 2));
+
+	return cipher;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Event handlers for the quote-input <textarea>
@@ -33,6 +65,12 @@ function quoteBlurHandler (event)
 	//	input event handler works correctly, the 'Encode' button should receive focus naturally.
 
 	document.getElementById ("encode").focus()
+}
+
+function quoteFocusHandler (event)
+{	event.preventDefault();
+//		target = event.target;
+	event.target.select();
 }
 
 function quoteInputHandler (event)

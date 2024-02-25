@@ -106,7 +106,8 @@ button:last-child
 	/*	This rule is used with JavaScript to dynamically apply the background-image to the <textarea>,  simply by	*/
 	/*	adding this class to (or removing it from) the <textarea>'s classList.										*/
 
-	background-image: url("http://placehold.co/300x150");
+	/* background-image: url("http://placehold.co/300x150"); */
+	background-image: url("textarea.svg");
 	    background-position: center;
 		background-repeat: no-repeat;
 }
