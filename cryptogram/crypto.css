@@ -13,6 +13,25 @@
 	--border-radius: 4px;
 	--color: white;
 	--page-width: 75%;
+		--max-width: 700px;
+}
+
+@media screen and (max-width: 600px)
+{
+	:root
+	{
+		--page-width: 85%;
+			--max-width: 400px;
+	}
+}
+
+@media screen and (max-width: 400px)
+{
+	:root
+	{
+		--page-width: 90%;
+			--max-width: 100%;
+	}
 }
 
 body
@@ -107,10 +126,11 @@ button:last-child
 	/*	This rule is used with JavaScript to dynamically apply the background-image to the <textarea>,  simply by	*/
 	/*	adding this class to (or removing it from) the <textarea>'s classList.										*/
 
-	background-image: url("textarea.svg");
+	background-image: url("textarea (ver 1).svg");
+	/* background-image: url("textarea.svg"); */
 	    background-position: center;
 		background-repeat: no-repeat;
-		background-size: contain;
+		/* background-size: contain; */
 }
 
 
