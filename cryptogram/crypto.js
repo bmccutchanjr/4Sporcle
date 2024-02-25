@@ -21,9 +21,30 @@ function encodeClickHandler (event)
 	//	This app is intended to be used in the construction of a cryptogram quiz.  It expects a string of text representing
 	//	a quote or anecdote and encodes the input using a simple substitution cipher.
 
-	const a1 = getAlphabet();
-	const a2 = getCipher();
+	const alphabet = getAlphabet();
+	const cipher = getCipher();
 
+	//	Encode the quote...
+	
+	const quote = document.getElementById ("input-quote").value;
+
+	//	...but do it to a copy of the quote to preserve upper and lower case of the original.
+
+	let qUpper = quote.toUpperCase();
+
+	cipher.forEach ((c, i) =>
+	{
+		qUpper = qUpper.replaceAll (alphabet[i], c);
+	})
+
+hideElement ("input-quote");
+hideElement ("encode");
+hideElement ("encoded-quote", false);
+
+document.getElementById ("encoded-quote").innerText = qUpper;
+
+//	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
+//	app.
 }
 
 function getAlphabet ()
