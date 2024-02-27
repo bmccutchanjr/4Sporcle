@@ -1,6 +1,7 @@
 window.addEventListener ("load", event =>
 {
 	const input = document.getElementById ("input-quote");
+	input.focus();
 	input.addEventListener ("blur", event => quoteBlurHandler (event));
 	input.addEventListener ("focus", event => quoteFocusHandler (event));
 	input.addEventListener ("input", event => quoteInputHandler (event));
@@ -35,47 +36,27 @@ function encodeClickHandler (event)
 
 	let qUpper = quote.toUpperCase();
 
-//		cipher.forEach ((c, i) =>
-//		{
-//			qUpper = qUpper.replaceAll (alphabet[i], c);
-//		})
-//	It would be nice, but I can't do a simple .replaceAll() to encrypt the string.  .replaceAll() is indescriminate
-//	and will operate on letters that were previously replaced as long as the replacement letter is earlier in the
-//	alphebet than the current.
-//
-//	If we start with the string ABC and encryption key CAB...
-//	1)	replaceAll ('A', 'C') produces the string 'CBC'
-//	2)	replaceAll ('B', 'A') produces the string 'CAC'
-//	3)	replaceAll ('C', 'B') produces the string 'BAB'
-//
-//	'A' from the original string is replaced with 'C' in step 1.  Step 3 replaces all occurances of 'C' with 'B'.
-//	.replaceAll() doesn't care (or know) that the first 'C' was originally an 'A' and shouldn't be changed again.
-//
-//	It would be a simpler, but .replaceAll() doesn't work.  I have to iterate through the quote and explicitly change
-//	each letter as I come to it.
+	//	First, convert the string to an array for processing
 
-//	First, convert the string to an array for processing
+	qUpper = qUpper.split("");
 
-qUpper = qUpper.split("");
+	for (i=0; i<qUpper.length; i++)
+	{
+		//	Iterate the quote, character by charavter
+		//	1)	find the the current character (from the quote) in alphabet[]
+		//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+		//
+		//	It seems simpler, but .replaceAll() doesn't actually work here.
 
-for (i=0; i<qUpper.length; i++)
-{
-	//	Iterate the quote, character by charavter
-	//	1)	find the the current character (from the quote) in alphabet[]
-	//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+		const j = alphabet.indexOf (qUpper[i]);
 
-//		const j = alphabet.indexOf (q[i]);
-	const j = alphabet.indexOf (qUpper[i]);
+		//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
+		//	not be replaced.
 
-	//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
-	//	not be replaced.
+		if (j >= 0) qUpper[i] = cipher[j];
+	}
 
-//		if (j >= 0) q[i] = cipher[j];
-	if (j >= 0) qUpper[i] = cipher[j];
-}
-
-//	qUpper = q.join("");
-qUpper = qUpper.join("");
+	qUpper = qUpper.join("");
 
 	hideElement ("input-quote");
 	hideElement ("encode");
