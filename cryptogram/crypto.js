@@ -24,6 +24,9 @@ function encodeClickHandler (event)
 	const alphabet = getAlphabet();
 	const cipher = getCipher();
 
+	//	alphabet[] and cipher[] have a one-to-one correspondence, and together form the code key.  cipher[x] replaces
+	//	alphabet[x].
+
 	//	Encode the quote...
 	
 	const quote = document.getElementById ("input-quote").value;
@@ -32,10 +35,47 @@ function encodeClickHandler (event)
 
 	let qUpper = quote.toUpperCase();
 
-	cipher.forEach ((c, i) =>
-	{
-		qUpper = qUpper.replaceAll (alphabet[i], c);
-	})
+//		cipher.forEach ((c, i) =>
+//		{
+//			qUpper = qUpper.replaceAll (alphabet[i], c);
+//		})
+//	It would be nice, but I can't do a simple .replaceAll() to encrypt the string.  .replaceAll() is indescriminate
+//	and will operate on letters that were previously replaced as long as the replacement letter is earlier in the
+//	alphebet than the current.
+//
+//	If we start with the string ABC and encryption key CAB...
+//	1)	replaceAll ('A', 'C') produces the string 'CBC'
+//	2)	replaceAll ('B', 'A') produces the string 'CAC'
+//	3)	replaceAll ('C', 'B') produces the string 'BAB'
+//
+//	'A' from the original string is replaced with 'C' in step 1.  Step 3 replaces all occurances of 'C' with 'B'.
+//	.replaceAll() doesn't care (or know) that the first 'C' was originally an 'A' and shouldn't be changed again.
+//
+//	It would be a simpler, but .replaceAll() doesn't work.  I have to iterate through the quote and explicitly change
+//	each letter as I come to it.
+
+//	First, convert the string to an array for processing
+
+qUpper = qUpper.split("");
+
+for (i=0; i<qUpper.length; i++)
+{
+	//	Iterate the quote, character by charavter
+	//	1)	find the the current character (from the quote) in alphabet[]
+	//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+
+//		const j = alphabet.indexOf (q[i]);
+	const j = alphabet.indexOf (qUpper[i]);
+
+	//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
+	//	not be replaced.
+
+//		if (j >= 0) q[i] = cipher[j];
+	if (j >= 0) qUpper[i] = cipher[j];
+}
+
+//	qUpper = q.join("");
+qUpper = qUpper.join("");
 
 	hideElement ("input-quote");
 	hideElement ("encode");
@@ -69,12 +109,28 @@ function getCipher ()
 
 	//	One last thing...  No element of the cipher should have the same value as the corresponding element of the
 	//	alphabet; e.g. A != A, B != B, etc.
+	//
+	//	It might seem better to create cipher[] in such a way that prevents this happening...text the randomly selected
+	//	letter and position in cipher[] right away and if they match randonly select another until they don't.  But what
+	//	if the failure is with the last remaining chaacter in alphabet[]?  There are no other options and the cipher will
+	//	always fail, forcing the app to start over anyway.
+	//
+	//	This seems cleaner and easier...
 
 	let fail = false;
-	cipher.forEach ((c, i) =>
+	const test = getAlphabet();
+
+	for(let i=0; i<cipher.length; i++)
 	{
-		if (c == alphabet[i]) fail = true;
-	})
+		if (cipher[i] == test[i])
+		{
+			fail = true;
+
+			//	I don't need to find every match, one is enough to invalidate the cipher key...
+
+			break;
+		}
+	}
 
 	//	If the cipher fails the test, try again.
 
