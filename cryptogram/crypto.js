@@ -22,50 +22,77 @@ function encodeClickHandler (event)
 	//	This app is intended to be used in the construction of a cryptogram quiz.  It expects a string of text representing
 	//	a quote or anecdote and encodes the input using a simple substitution cipher.
 
-	const alphabet = getAlphabet();
-	const cipher = getCipher();
+//		const alphabet = getAlphabet();
+//		const cipher = getCipher();
+//	
+//		//	alphabet[] and cipher[] have a one-to-one correspondence, and together form the code key.  cipher[x] replaces
+//		//	alphabet[x].
+//	
+//		//	Encode the quote...
+//		
+//		const quote = document.getElementById ("input-quote").value;
+//	
+//		//	...but do it to a copy of the quote to preserve upper and lower case of the original.
+//	
+//		let qUpper = quote.toUpperCase();
+//	
+//		//	First, convert the string to an array for processing
+//	
+//		qUpper = qUpper.split("");
+//	
+//		for (i=0; i<qUpper.length; i++)
+//		{
+//			//	Iterate the quote, character by charavter
+//			//	1)	find the the current character (from the quote) in alphabet[]
+//			//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+//			//
+//			//	It seems simpler, but .replaceAll() doesn't actually work here.
+//	
+//			const j = alphabet.indexOf (qUpper[i]);
+//	
+//			//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
+//			//	not be replaced.
+//	
+//			if (j >= 0) qUpper[i] = cipher[j];
+//		}
+//	
+//		qUpper = qUpper.join("");
+//	
+//		hideElement ("input-quote");
+//		hideElement ("encode");
+//		hideElement ("encoded-quote", false);
+//	
+//		document.getElementById ("encoded-quote").innerText = qUpper;
+//	
+//	//	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
+//	//	app.
+const quote = document.getElementById ("input-quote").value;
+if (quoteIsTooLongForGrid (quote)) return;
 
-	//	alphabet[] and cipher[] have a one-to-one correspondence, and together form the code key.  cipher[x] replaces
-	//	alphabet[x].
+//	If the quote is longer than 30 characters, it needs to be broken up into shorter segments to fit within the
+//	restraints of a Sporcle Grid quiz.
 
-	//	Encode the quote...
-	
-	const quote = document.getElementById ("input-quote").value;
 
-	//	...but do it to a copy of the quote to preserve upper and lower case of the original.
+}
 
-	let qUpper = quote.toUpperCase();
+function quoteIsTooLongForGrid (q)
+{
+	//	Sporcle limits Grid quizzes to a maximum 30x30 grid.  For practical purposes, this limits the quote to
+	//	300 characters, including spaces and punctuation.
 
-	//	First, convert the string to an array for processing
-
-	qUpper = qUpper.split("");
-
-	for (i=0; i<qUpper.length; i++)
+	if (q.length > 300)
 	{
-		//	Iterate the quote, character by charavter
-		//	1)	find the the current character (from the quote) in alphabet[]
-		//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
-		//
-		//	It seems simpler, but .replaceAll() doesn't actually work here.
-
-		const j = alphabet.indexOf (qUpper[i]);
-
-		//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
-		//	not be replaced.
-
-		if (j >= 0) qUpper[i] = cipher[j];
+		alert ("The text is too long for a Sporcle Grid type quiz");
+		return true;
 	}
 
-	qUpper = qUpper.join("");
+	//	But a prettier quiz requires blank rows above and below the puzzle, as well as blank columns to either
+	//	side.  That limits the quote to 252 characters.  The quiz can still be presented as a Grid type, but it 
+	//	won't be as pretty.
 
-	hideElement ("input-quote");
-	hideElement ("encode");
-	hideElement ("encoded-quote", false);
+	if (q.length > 252) alert ("This text is longer than 252 characters and may not work well within Sporcle Grid constraints.");
 
-	document.getElementById ("encoded-quote").innerText = qUpper;
-
-//	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
-//	app.
+	return false;
 }
 
 function getAlphabet ()

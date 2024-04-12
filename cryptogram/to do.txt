@@ -1,0 +1,28 @@
+The maximum Sporcle grid size is 30x30  That's a maximum 30 characters per line (including spaces and punctuation).
+I want a border, so really 28.
+
+Both the encrypted text and solution must be provided.  The solution should be the the row immediately above
+the encrypted text, like:
+
+	"	T	h	e		t	i	m	e		h	a	s		c	o	m	e	,	"		t	h	e
+	"	V	T	K	 	V	N	U	K	 	T	J	E	 	W	R	U	K	,	"	 	V	T	K
+
+There is a maximum of one character in each cell.
+
+The quiz has to include both the spaces for solving as well as the encrypted text.  For playability, the solution
+cells should appear immediately above the encrypted text.  So that's two actual lines of quiz for each line of
+encrypted text.  I'd like a blank row between these pairs and the next, so really three rows.
+
+	"	T	h	e		t	i	m	e		h	a	s		c	o	m	e	,	"		t	h	e
+	"	V	T	K	 	V	N	U	K	 	T	J	E	 	W	R	U	K	,	"	 	V	T	K
+																							
+	w	a	l	r	u	s		s	a	i	d	,		"	t	o		t	a	l	k	 	o	f
+	D	J	I	C	X	E	 	E	J	N	L	,		"	V	R	 	V	J	I	Y	 	R	Z
+
+That means a maximum 10 rows of encrypted text, and a maximum 300 characters (preferably 280) in the puzzle.
+Longer quotes will not work within the constraints of the Sporcle Grid quiz, but might work as a Map quiz.  Putting
+a row of blank cells below the last row of encrypted text takes away one row of encrypted text, which places the
+maximum length of the quote at 252 to 270 characters.  (You can go higher, it just won't look as good.)
+
+Rows are terminated with a carriage return.  Cells within a row are separated with tabs.  Blank cells still
+require the tab character.  A completely blank row just requires the carriage return.
