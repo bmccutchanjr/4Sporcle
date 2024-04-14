@@ -66,12 +66,14 @@ function encodeClickHandler (event)
 //	
 //	//	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
 //	//	app.
-const quote = document.getElementById ("input-quote").value;
-if (quoteIsTooLongForGrid (quote)) return;
+	let quote = document.getElementById ("input-quote").value;
+	if (quoteIsTooLongForGrid (quote)) return;
 
-//	If the quote is longer than 30 characters, it needs to be broken up into shorter segments to fit within the
-//	restraints of a Sporcle Grid quiz.
+	//	If the quote is longer than 30 characters (it probably is), it needs to be broken into shorter segments to fit
+	//	within the constraints of a Sporcle Grid quiz.
 
+	const array = breakDownTheQuote (quote);
+//	alert (JSON.stringify(array, " ", 2));
 
 }
 
@@ -93,6 +95,29 @@ function quoteIsTooLongForGrid (q)
 	if (q.length > 252) alert ("This text is longer than 252 characters and may not work well within Sporcle Grid constraints.");
 
 	return false;
+}
+
+function breakDownTheQuote (q)
+{
+	//	The maximum size of Sporcle Grid quiz is 30x30 cells, and Sporcle will delete any data that runs past.
+	//
+	//	This function make multiple smaller strings from the quote string, and returns these strings as an array.
+	//	The quote string will be subdivided between words, so each substring may well be a different length.
+
+	let array = [];
+	while (q.length > 28)
+	{
+		let sub = q.substring (0, 30);		//	The first 30 characters in the quote string
+		let pos = sub.lastIndexOf (" ");	//	The position of the last space in the new substring
+		sub = sub.substring (0, pos);		//	The substring without partial words
+		array.push (sub);
+
+		q = q.substring (pos);				//	The quote string without the new substring
+	}
+
+	array.push (q);
+
+	return array;
 }
 
 function getAlphabet ()
