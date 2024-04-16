@@ -69,6 +69,12 @@ function encodeClickHandler (event)
 
 		encoded.push (arr2.join(""));
 	}
+
+	hideElement ("input-quote");
+	hideElement ("encode");
+	hideElement ("encoded-quote", false);
+
+	document.getElementById ("encoded-quote").innerText = encoded.join("");
 }
 
 function quoteIsTooLongForGrid (q)
