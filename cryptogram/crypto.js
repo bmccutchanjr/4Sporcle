@@ -22,59 +22,53 @@ function encodeClickHandler (event)
 	//	This app is intended to be used in the construction of a cryptogram quiz.  It expects a string of text representing
 	//	a quote or anecdote and encodes the input using a simple substitution cipher.
 
-//		const alphabet = getAlphabet();
-//		const cipher = getCipher();
-//	
-//		//	alphabet[] and cipher[] have a one-to-one correspondence, and together form the code key.  cipher[x] replaces
-//		//	alphabet[x].
-//	
-//		//	Encode the quote...
-//		
-//		const quote = document.getElementById ("input-quote").value;
-//	
-//		//	...but do it to a copy of the quote to preserve upper and lower case of the original.
-//	
-//		let qUpper = quote.toUpperCase();
-//	
-//		//	First, convert the string to an array for processing
-//	
-//		qUpper = qUpper.split("");
-//	
-//		for (i=0; i<qUpper.length; i++)
-//		{
-//			//	Iterate the quote, character by charavter
-//			//	1)	find the the current character (from the quote) in alphabet[]
-//			//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
-//			//
-//			//	It seems simpler, but .replaceAll() doesn't actually work here.
-//	
-//			const j = alphabet.indexOf (qUpper[i]);
-//	
-//			//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
-//			//	not be replaced.
-//	
-//			if (j >= 0) qUpper[i] = cipher[j];
-//		}
-//	
-//		qUpper = qUpper.join("");
-//	
-//		hideElement ("input-quote");
-//		hideElement ("encode");
-//		hideElement ("encoded-quote", false);
-//	
-//		document.getElementById ("encoded-quote").innerText = qUpper;
-//	
-//	//	Now I need to figure out how to format the data so I can upload it to Sporcle.  When I have that, I can fininsh this
-//	//	app.
+	//	Get the solution string as entered in the <textarea>.  Check that it will work within Sporcle's constraints and
+	//	convert it to upper case.  Sporcle will convert it anyway, so might as well.
+
 	let quote = document.getElementById ("input-quote").value;
 	if (quoteIsTooLongForGrid (quote)) return;
+	quote = quote.toUpperCase();
 
 	//	If the quote is longer than 30 characters (it probably is), it needs to be broken into shorter segments to fit
 	//	within the constraints of a Sporcle Grid quiz.
 
-	const array = breakDownTheQuote (quote);
-//	alert (JSON.stringify(array, " ", 2));
+	const solution = breakDownTheQuote (quote);
 
+	//	Encode the quote...
+
+	const alphabet = getAlphabet();			//	An array of the English alphabet
+	const cipher = getCipher(alphabet);		//	An array of the cipher.  Elements of cipher have a 1-to-1 coorespondence
+											//	with alphabet
+	const encoded = [];
+
+	for (let i=0; i<solution.length; i++)
+	{
+		//	Iterate the solution text array and encode it...
+
+		let arr1 = solution[i].split("");
+		let arr2 = [];
+
+		for (let j=0; j<arr1.length; j++)
+		{
+			//	Iterate the quote, character by charavter
+			//	1)	find the the current character (from the quote) in alphabet[]
+			//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+			//
+			//	It seems simpler, but .replaceAll() doesn't actually work here.
+
+			//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
+			//	not be replaced.
+
+			const k = alphabet.indexOf (arr1[j]);
+
+			if (k >= 0)
+				arr2.push (cipher[k]);
+			else
+				arr2.push (arr1[j]);
+		}
+
+		encoded.push (arr2.join(""));
+	}
 }
 
 function quoteIsTooLongForGrid (q)
@@ -125,19 +119,19 @@ function getAlphabet ()
 	return [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
 }
 
-function getCipher ()
+function getCipher (alphabet)
 {	//	Create the substitution cipher that will be used.
 
-	const alphabet = getAlphabet();
 	const cipher = [];
 
 	//	Remove some random element from the alphabet, and push that value into the array cipher[].  Repeat until no
 	//	elements remain in the alphabet.
 
-	while (alphabet.length > 0)
+	const temp = getAlphabet();
+	while (temp.length > 0)
 	{
-		const x = Math.floor ((Math.random() * alphabet.length));
-		cipher.push (alphabet.splice (x, 1)[0]);
+		const x = Math.floor ((Math.random() * temp.length));
+		cipher.push (temp.splice (x, 1)[0]);
 	}
 
 	//	One last thing...  No element of the cipher should have the same value as the corresponding element of the
@@ -151,25 +145,11 @@ function getCipher ()
 	//	This seems cleaner and easier...
 
 	let fail = false;
-	const test = getAlphabet();
 
 	for(let i=0; i<cipher.length; i++)
 	{
-		if (cipher[i] == test[i])
-		{
-			fail = true;
-
-			//	I don't need to find every match, one is enough to invalidate the cipher key...
-
-			break;
-		}
+		if (cipher[i] == alphabet[i]) { return getCipher(alphabet); }
 	}
-
-	//	If the cipher fails the test, try again.
-
-	if (fail) return getCipher();
-
-	//	Otherwise, return the cipher
 
 	return cipher;
 }
