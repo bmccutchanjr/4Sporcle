@@ -25,31 +25,82 @@ function encodeClickHandler (event)
 	//	Get the solution string as entered in the <textarea>.  Check that it will work within Sporcle's constraints and
 	//	convert it to upper case.  Sporcle will convert it anyway, so might as well.
 
-	let quote = document.getElementById ("input-quote").value;
-	if (quoteIsTooLongForGrid (quote)) return;
-	quote = quote.toUpperCase();
+//		let quote = document.getElementById ("input-quote").value;
+//		if (quoteIsTooLongForGrid (quote)) return;
+//		quote = quote.toUpperCase();
+	let solution = document.getElementById ("input-quote").value.toUpperCase();
 
-	//	If the quote is longer than 30 characters (it probably is), it needs to be broken into shorter segments to fit
-	//	within the constraints of a Sporcle Grid quiz.
+//		//	If the quote is longer than 30 characters (it probably is), it needs to be broken into shorter segments to fit
+//		//	within the constraints of a Sporcle Grid quiz.
+//	
+//		const solution = breakDownTheQuote (quote);
+//	
+//		//	Encode the quote...
+//	
+//		const alphabet = getAlphabet();			//	An array of the English alphabet
+//		const cipher = getCipher(alphabet);		//	An array of the cipher.  Elements of cipher have a 1-to-1 coorespondence
+//												//	with alphabet
+//		const encoded = [];
+//	
+//		for (let i=0; i<solution.length; i++)
+//		{
+//			//	Iterate the solution text array and encode it...
+//	
+//			let arr1 = solution[i].split("");
+//			let arr2 = [];
+//	
+//			for (let j=0; j<arr1.length; j++)
+//			{
+//				//	Iterate the quote, character by charavter
+//				//	1)	find the the current character (from the quote) in alphabet[]
+//				//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
+//				//
+//				//	It seems simpler, but .replaceAll() doesn't actually work here.
+//	
+//				//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
+//				//	not be replaced.
+//	
+//				const k = alphabet.indexOf (arr1[j]);
+//	
+//				if (k >= 0)
+//					arr2.push (cipher[k]);
+//				else
+//					arr2.push (arr1[j]);
+//			}
+//	
+//			encoded.push (arr2.join(""));
+//		}
+//	
+//		hideElement ("input-quote");
+//		hideElement ("encode");
+//		hideElement ("encoded-quote", false);
+//	
+//		document.getElementById ("encoded-quote").innerText = encoded.join("");
 
-	const solution = breakDownTheQuote (quote);
-
-	//	Encode the quote...
+	//	There are at least two (I think only two) quiz type suitable to cryptogram puzzles.  The first, and most obvious,
+	//	is the Grid quiz.  The other is a Map quiz.  Either should work, but the grid will work more like a printed
+	//	puzzle the a map.
+	//
+	//	The thing they have in common is the need to encrypt a quotation or phrase.  Cryptograms use a simple substitution
+	//	cipher.  Each letter of the alphabet is replaced by a different letter of the alphabet; A => I, B => Q, etc.
+	//	Non-alpha characters (numerals, punctuation, spaces, etc.) are not usually encrypted in cryptograms.  And although
+	//	not it's not strictly required, no letter should be replaced with itself: A != A, B != B, etc.
 
 	const alphabet = getAlphabet();			//	An array of the English alphabet
 	const cipher = getCipher(alphabet);		//	An array of the cipher.  Elements of cipher have a 1-to-1 coorespondence
 											//	with alphabet
-	const encoded = [];
+	const array = solution.split ("");		//	The solution text converted to an array
+	const enccrypt = [];					//	an array for the encrypted text
 
-	for (let i=0; i<solution.length; i++)
+	for (let i=0; i<array.length; i++)
 	{
 		//	Iterate the solution text array and encode it...
 
-		let arr1 = solution[i].split("");
-		let arr2 = [];
-
-		for (let j=0; j<arr1.length; j++)
-		{
+//			let arr1 = solution[i].split("");
+//			let arr2 = [];
+//	
+//			for (let j=0; j<arr1.length; j++)
+//			{
 			//	Iterate the quote, character by charavter
 			//	1)	find the the current character (from the quote) in alphabet[]
 			//	2)	replace the current character (from the quote) with the corresponding letter in cipher[]
@@ -60,64 +111,22 @@ function encodeClickHandler (event)
 			//	not be replaced.
 
 			const k = alphabet.indexOf (arr1[j]);
-
+	
 			if (k >= 0)
-				arr2.push (cipher[k]);
+				encrypt.push (cipher[k]);
 			else
-				arr2.push (arr1[j]);
-		}
+				encrypt.push (arr1[j]);
+//			}
 
-		encoded.push (arr2.join(""));
+//			encrypt.push (arr2.join(""));
 	}
 
-	hideElement ("input-quote");
+formatForGrid (solution, encoded);
+
+	hideElement ("quote-section");
 	hideElement ("encode");
-	hideElement ("encoded-quote", false);
+	hideElement ("encryption-section", false);
 
-	document.getElementById ("encoded-quote").innerText = encoded.join("");
-}
-
-function quoteIsTooLongForGrid (q)
-{
-	//	Sporcle limits Grid quizzes to a maximum 30x30 grid.  For practical purposes, this limits the quote to
-	//	300 characters, including spaces and punctuation.
-
-	if (q.length > 300)
-	{
-		alert ("The text is too long for a Sporcle Grid type quiz");
-		return true;
-	}
-
-	//	But a prettier quiz requires blank rows above and below the puzzle, as well as blank columns to either
-	//	side.  That limits the quote to 252 characters.  The quiz can still be presented as a Grid type, but it 
-	//	won't be as pretty.
-
-	if (q.length > 252) alert ("This text is longer than 252 characters and may not work well within Sporcle Grid constraints.");
-
-	return false;
-}
-
-function breakDownTheQuote (q)
-{
-	//	The maximum size of Sporcle Grid quiz is 30x30 cells, and Sporcle will delete any data that runs past.
-	//
-	//	This function make multiple smaller strings from the quote string, and returns these strings as an array.
-	//	The quote string will be subdivided between words, so each substring may well be a different length.
-
-	let array = [];
-	while (q.length > 28)
-	{
-		let sub = q.substring (0, 30);		//	The first 30 characters in the quote string
-		let pos = sub.lastIndexOf (" ");	//	The position of the last space in the new substring
-		sub = sub.substring (0, pos);		//	The substring without partial words
-		array.push (sub);
-
-		q = q.substring (pos);				//	The quote string without the new substring
-	}
-
-	array.push (q);
-
-	return array;
 }
 
 function getAlphabet ()
@@ -159,6 +168,122 @@ function getCipher (alphabet)
 
 	return cipher;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Functions used to format the solution and encrypted text for a Sporcle grid-type quiz
+//
+
+function formatForGrid (solution, encrypted)
+{
+	//	Format the solution and encrypyed text so that it may be imported into a Sporcle Grid quiz.  Sporcle uses the
+	//	same format that most spreadsheets use (Excel and Sheets do anyway) to copy-and-paste content.  Sporcle's intent
+	//	is to allow quiz developers to develop their quizzes with a spreadsheet and copy the completed data into a quiz.
+	//
+	//	Rows of data are made up of individual cells.  Cells are separated by tabs and rows are separated by new line.
+    //
+	//	But there is one huge difference between most spreadsheets and a Sporcle Grid quiz.  Sporcle limits the quiz to
+	//	30x30 cells.
+
+	const grid = document.getElementById ("grid-formatted");
+
+	if (q.length > 300)
+	{
+		//	Sporcle limits Grid quizzes to a maximum 30x30 grid.  For practical purposes (line spacing, borders, etc.)
+		//	this limits the quote to 300 characters, including spaces and punctuation.
+
+		grid.classList.add ("error");
+
+		const div = grid.querySelector("#title");
+		div.innetText =  "The text is too long for a Sporcle Grid type quiz";
+		return;
+	}
+	
+	if (q.length > 252)
+	{
+		//	The puzzle will look better if cells around the perimeter are blank, especially if a background image is
+		//	used.  That gives us a practical limit of 252 characters.
+
+		grid.classList.add ("error");
+		grid.title = "This text is longer than 252 characters and may not work well within Sporcle Grid constraints.";
+		grid.classList.add ("error");
+	}
+
+	//	Format it for a grid quiz...
+
+	const array = [];								//	A temporary array
+
+	while (solution.length > 28)
+	{
+		array.push ("\n");							//	A row of empty cells above each line of the quote
+
+		//	The solution text is longer than 28 characters.  Create a substring of the solution that is no
+		//	more than 28 characters long without breaking words.
+
+		let sub = solution.substring (0, 30);		//	The first 30 characters in the quote string
+		let pos = sub.lastIndexOf (" ");			//	The last break between words (a space) in the new substring
+		sub = sub.substring (0, pos);				//	The substring without partial words
+		sub = sub.split("").join("\t");				//	A tab between characters
+		array.push (sub);							//	Push the substring into the temporary array[]
+		array.push("\n");
+
+		solution = solution.substring (pos);		//	Remove the substring from the solution text
+
+		sub = encrypted.substring (0, pos);			//	The cooresponding portion of the encrypted text 
+		sub = sub.split("").join("\t");				//	A tab between characters
+		array.push (sub);							//	Push the substring into the temporary array[]
+		encrypted = encrypted.substring (pos);		//	Remove the substring from the encrypted text
+		array.push("\n");
+	}
+
+	array.push ("\n");								//	A row of empty cells at the end of the quiz
+
+	grid.querySelector("body") = array.join("\n");
+}
+
+//	function quoteIsTooLongForGrid (q)
+//	{
+//		//	Sporcle limits Grid quizzes to a maximum 30x30 grid.  For practical purposes, this limits the quote to
+//		//	300 characters, including spaces and punctuation.
+//	
+//		if (q.length > 300)
+//		{
+//			alert ("The text is too long for a Sporcle Grid type quiz");
+//			return true;
+//		}
+//	
+//		//	But a prettier quiz requires blank rows above and below the puzzle, as well as blank columns to either
+//		//	side.  That limits the quote to 252 characters.  The quiz can still be presented as a Grid type, but it 
+//		//	won't be as pretty.
+//	
+//		if (q.length > 252) alert ("This text is longer than 252 characters and may not work well within Sporcle Grid constraints.");
+//	
+//		return false;
+//	}
+
+function breakItDown (q)
+{
+	//	The maximum size of Sporcle Grid quiz is 30x30 cells, and Sporcle will delete any data that runs past.
+	//
+	//	This function make multiple smaller strings from the quote string, and returns these strings as an array.
+	//	The quote string will be subdivided between words, so each substring may well be a different length.
+
+	let array = [];
+	while (q.length > 28)
+	{
+		let sub = q.substring (0, 30);		//	The first 30 characters in the quote string
+		let pos = sub.lastIndexOf (" ");	//	The position of the last space in the new substring
+		sub = sub.substring (0, pos);		//	The substring without partial words
+		array.push (sub);
+
+		q = q.substring (pos);				//	The quote string without the new substring
+	}
+
+	array.push (q);
+
+	return array;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Event handlers for the quote-input <textarea>
