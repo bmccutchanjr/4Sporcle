@@ -139,16 +139,49 @@ button:last-child
 /*	style specific to the output																					*/
 /*																															*/
 
-#encoded-quote
+#encrypted-section
+{
+	width: var(--page-width);
+}
+
+#encrypted-section.flex
+{
+	display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+}
+
+#encrypted-section > *
 {
 	backdrop-filter: blur(20px);
 	background-color: rgba(255, 255, 255, 0.5);
 	border: 1px solid black;
 		border-radius: var(--border-radius);
-	height: 50vh;
-	padding: var(--border-radius);
-	width: var(--page-width);
+	flex-grow: 1;
+	flex-shrink: 0;
+	/* height: 50vh; */
+	height: 75vh;
+	/* padding: var(--border-radius); */
+	width: 30%;
 }
+
+#encrypted-section > *:first-child
+{
+	margin-right: 20px;
+}
+
+#encrypted-section > * #title
+{
+	background-color: blue;
+	color: white;
+	text-align: center;
+}
+
+#encrypted-section > * #body
+{
+	padding: var(--border-radius);
+}
+
 
 /*	**********************************************************************************************************************	*/
 /*	style specific to sticky footer																							*/

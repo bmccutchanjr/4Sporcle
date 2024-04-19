@@ -90,7 +90,7 @@ function encodeClickHandler (event)
 	const cipher = getCipher(alphabet);		//	An array of the cipher.  Elements of cipher have a 1-to-1 coorespondence
 											//	with alphabet
 	const array = solution.split ("");		//	The solution text converted to an array
-	const enccrypt = [];					//	an array for the encrypted text
+	const encrypt = [];						//	an array for the encrypted text
 
 	for (let i=0; i<array.length; i++)
 	{
@@ -110,22 +110,24 @@ function encodeClickHandler (event)
 			//	But only replace charaters that are found in alphabet[].  Characters such as spaces and punctuation should
 			//	not be replaced.
 
-			const k = alphabet.indexOf (arr1[j]);
+//				const k = alphabet.indexOf (arr1[j]);
+			const k = alphabet.indexOf (array[i]);
 	
 			if (k >= 0)
 				encrypt.push (cipher[k]);
 			else
-				encrypt.push (arr1[j]);
+				encrypt.push (array[i]);
 //			}
 
 //			encrypt.push (arr2.join(""));
 	}
 
-formatForGrid (solution, encoded);
+formatForGrid (solution, encrypt);
 
 	hideElement ("quote-section");
 	hideElement ("encode");
 	hideElement ("encryption-section", false);
+	document.getElementById("encryption-section").classList.add ("flex");
 
 }
 
@@ -187,7 +189,7 @@ function formatForGrid (solution, encrypted)
 
 	const grid = document.getElementById ("grid-formatted");
 
-	if (q.length > 300)
+	if (solution.length > 300)
 	{
 		//	Sporcle limits Grid quizzes to a maximum 30x30 grid.  For practical purposes (line spacing, borders, etc.)
 		//	this limits the quote to 300 characters, including spaces and punctuation.
@@ -199,7 +201,7 @@ function formatForGrid (solution, encrypted)
 		return;
 	}
 	
-	if (q.length > 252)
+	if (solution.length > 252)
 	{
 		//	The puzzle will look better if cells around the perimeter are blank, especially if a background image is
 		//	used.  That gives us a practical limit of 252 characters.
