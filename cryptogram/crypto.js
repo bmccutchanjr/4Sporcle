@@ -122,7 +122,8 @@ function encodeClickHandler (event)
 //			encrypt.push (arr2.join(""));
 	}
 
-formatForGrid (solution, encrypt);
+const encrypted = encrypt.join ("");
+formatForGrid (solution, encrypted);
 
 	hideElement ("quote-section");
 	hideElement ("encode");
@@ -240,7 +241,7 @@ function formatForGrid (solution, encrypted)
 
 	array.push ("\n");								//	A row of empty cells at the end of the quiz
 
-	grid.querySelector("body") = array.join("\n");
+	grid.querySelector("#body").innerText = array.join("\n");
 }
 
 //	function quoteIsTooLongForGrid (q)
